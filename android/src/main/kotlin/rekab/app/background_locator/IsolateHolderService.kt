@@ -64,6 +64,7 @@ class IsolateHolderService : Service() {
         }
 
         val intent = Intent(this, getMainActivityClass(this))
+        intent.setAction("STICKY_NOTIFICATION_CLICKED")
         val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
