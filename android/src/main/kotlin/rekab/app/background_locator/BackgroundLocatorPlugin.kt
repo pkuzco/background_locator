@@ -241,18 +241,21 @@ class BackgroundLocatorPlugin()
     }
 
     override fun onNewIntent(intent: Intent?): Boolean {
-        val notificationCallback = getCallbackHandle(activity!!, NOTIFICATION_CALLBACK_HANDLE_KEY)
-        if (notificationCallback > 0 && IsolateHolderService._backgroundFlutterView != null) {
-            val backgroundChannel = MethodChannel(IsolateHolderService._backgroundFlutterView,
-                    Keys.BACKGROUND_CHANNEL_ID)
-            Handler(activity?.mainLooper)
-                    .post {
-                        backgroundChannel.invokeMethod(Keys.BCM_NOTIFICATION_CLICK,
-                                hashMapOf(ARG_NOTIFICATION_CALLBACK to notificationCallback))
-                    }
+        if ("STICKY_NOTIFICATION_CLICKED".equals(intent.getAction())) {
+            val notificationCallback = getCallbackHandle(activity!!, NOTIFICATION_CALLBACK_HANDLE_KEY)
+            if (notificationCallback > 0 && IsolateHolderService._backgroundFlutterView != null) {
+                val backgroundChannel = MethodChannel(IsolateHolderService._backgroundFlutterView,
+                        Keys.BACKGROUND_CHANNEL_ID)
+                Handler(activity?.mainLooper)
+                        .post {
+                            backgroundChannel.invokeMethod(Keys.BCM_NOTIFICATION_CLICK,
+                                    hashMapOf(ARG_NOTIFICATION_CALLBACK to notificationCallback))
+                        }
+            }
+            return true
         }
 
-        return true
+        return false
     }
 
     override fun onDetachedFromActivity() {
