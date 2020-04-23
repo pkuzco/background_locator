@@ -241,7 +241,7 @@ class BackgroundLocatorPlugin()
     }
 
     override fun onNewIntent(intent: Intent?): Boolean {
-        if ("STICKY_NOTIFICATION_CLICKED".equals(intent.getAction())) {
+        if ("STICKY_NOTIFICATION_CLICKED".equals(intent?.getAction())) {
             val notificationCallback = getCallbackHandle(activity!!, NOTIFICATION_CALLBACK_HANDLE_KEY)
             if (notificationCallback > 0 && IsolateHolderService._backgroundFlutterView != null) {
                 val backgroundChannel = MethodChannel(IsolateHolderService._backgroundFlutterView,
